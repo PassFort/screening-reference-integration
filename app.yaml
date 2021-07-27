@@ -1,0 +1,4 @@
+runtime: python37
+service: screening-ref-integration
+includes:
+  - env_variables.yaml

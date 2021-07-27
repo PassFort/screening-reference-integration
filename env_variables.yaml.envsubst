@@ -1,0 +1,3 @@
+env_variables:
+  INTEGRATION_SECRET_KEY: '$SCREENING_REFERENCE_INTEGRATION_SECRET_KEY'
+  PASSFORT_BASE_URL: 'https://api.blockops.co/integrations'

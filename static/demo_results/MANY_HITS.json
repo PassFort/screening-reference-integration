@@ -1,0 +1,37 @@
+{
+    "search_output": [
+        {
+            "name": "PASSFORT LIMITED",
+            "number": "09565115",
+            "country_of_incorporation": "GBR",
+            "status": "ACTIVE",
+            "provider_reference": {
+                "label": "COMPANY_DATA_REFERENCE_INTEGRATION",
+                "reference": "GB-09565115"
+            }
+        },
+        {
+            "name": "PASSFORD PROPERTIES LIMITED",
+            "number": "03852680",
+            "country_of_incorporation": "GBR",
+            "status": "DORMANT",
+            "provider_reference": {
+                "label": "COMPANY_DATA_REFERENCE_INTEGRATION",
+                "reference": "GB-03852680"
+            }
+        },
+        {
+            "name": "PASSFIELD ELECTRONICS LTD",
+            "number": "048521723",
+            "country_of_incorporation": "GBR",
+            "status": "DISSOLVED",
+            "provider_reference": {
+                "label": "COMPANY_DATA_REFERENCE_INTEGRATION",
+                "reference": "GB-03852680"
+            }
+        }
+    ],
+    "errors": [],
+    "warnings": [],
+    "provider_data": "Demo result. Did not make request to provider."
+}

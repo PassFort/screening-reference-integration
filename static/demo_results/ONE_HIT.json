@@ -1,0 +1,17 @@
+{
+    "search_output": [
+        {
+            "name": "PASSFORT LIMITED",
+            "number": "09565115",
+            "country_of_incorporation": "GBR",
+            "status": "ACTIVE",
+            "provider_reference": {
+                "label": "COMPANY_DATA_REFERENCE_INTEGRATION",
+                "reference": "GB-09565115"
+            }
+        }
+    ],
+    "errors": [],
+    "warnings": [],
+    "provider_data": "Demo result. Did not make request to provider."
+}
