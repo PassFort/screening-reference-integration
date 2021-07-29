@@ -3,18 +3,23 @@
   "check_template": {
     "type": "ONE_TIME_POLLING",
     "initial_interval": 120,
-		"polling_interval": 30,
-		"max_polls": 10
+    "polling_interval": 30,
+    "max_polls": 10
   },
   "pricing": {
-      "supports_reselling": true,
-      "maximum_cost": 200
+    "supports_reselling": true,
+    "maximum_cost": 200
   },
   "supported_countries": [
-    "GBR", "USA", "CAN", "NLD"
+    "GBR",
+    "USA",
+    "CAN",
+    "NLD"
   ],
   "supported_features": [
-      "PEPS", "SANCTIONS", "ADVERSE_MEDIA"
+    "PEPS",
+    "SANCTIONS",
+    "ADVERSE_MEDIA"
   ],
   "credentials": {
     "fields": [
