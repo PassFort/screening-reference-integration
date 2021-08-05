@@ -91,6 +91,8 @@ class ApproxDateType(DateType):
 class DemoResultType(StringType):
     ANY = 'ANY'
     ANY_CHARGE = 'ANY_CHARGE'
+
+    ALL_DATA = 'ALL_DATA'
     NO_MATCH = 'NO_MATCH'
 
     # Errors
@@ -229,6 +231,7 @@ class PollCheckResponse(BaseModel):
     provider_data = BaseType(required=True)
 
     check_output = ModelType(EntityData, default=None)
+    charges = ListType(ModelType(Charge), default=list)
 
     warnings = ListType(ModelType(Warning), required=True, default=list)
     errors = ListType(ModelType(Error), required=True, default=list)

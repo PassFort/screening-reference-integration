@@ -5,6 +5,8 @@ import time
 from email.utils import formatdate
 from uuid import uuid4
 
+from app.individual import PROVIDER_ID
+
 
 def test_run_check_protected(session, auth):
     # Should require authentication
@@ -46,65 +48,30 @@ def test_individual_check_smoke(session, auth):
 
     res = r.json()
 
-    #TODO: Implement
-    assert res['errors'] == [{
-        'type': 'INVALID_CHECK_INPUT',
-        'message': 'Not implemented!',
-    }]
-
-
-def test_individual_check_unsupported_country(session, auth):
-    r = session.post('http://app/individual/checks', json={
-        'id': str(uuid4()),
-        'check_input': {
-            'entity_type': 'INDIVIDUAL'
-        },
-        'commercial_relationship': 'DIRECT',
-        'provider_config': {},
-        'demo_result': 'ALL_DATA'
-    }, auth=auth())
-    assert r.status_code == 200
-    assert r.headers['content-type'] == 'application/json'
-
-    res = r.json()
-
-    #TODO: Implement
-    # assert res['errors'] == [{
-    #     'type': 'INVALID_CHECK_INPUT',
-    #     'sub_type': 'UNSUPPORTED_COUNTRY',
-    #     'message': 'Country not supported.',
-    # }]
-    assert res['errors'] == [{
-        'type': 'INVALID_CHECK_INPUT',
-        'message': 'Not implemented!',
-    }]
+    assert res['errors'] == []
 
 
 def test_individual_check_unsupported_demo_result(session, auth):
-    r = session.post('http://app/individual/checks', json={
-        'id': str(uuid4()),
-        'check_input': {
-            'entity_type': 'INDIVIDUAL',
-        },
+    check_id = uuid4()
+    r = session.post(f'http://app/company/checks/{check_id}/poll', json={
+        'id': str(check_id),
         'commercial_relationship': 'DIRECT',
         'provider_config': {},
-        'demo_result': 'NOT_A_REAL_DEMO_RESULT'
+        'provider_credentials': {},
+        'demo_result': 'NOT_A_REAL_DEMO_RESULT',
+        'provider_id': PROVIDER_ID, 
+        'reference': '12345',
+        'custom_data': { 'counter': 0 },
     }, auth=auth())
     assert r.status_code == 200
     assert r.headers['content-type'] == 'application/json'
 
     res = r.json()
 
-    #TODO: Implement
-    # assert res['errors'] == [{
-    #     'type': 'UNSUPPORTED_DEMO_RESULT',
-    #     'message': 'Demo result is not supported.',
-    # }]
     assert res['errors'] == [{
-        'type': 'INVALID_CHECK_INPUT',
-        'message': 'Not implemented!',
+        'type': 'UNSUPPORTED_DEMO_RESULT',
+        'message': 'Demo result is not supported.',
     }]
-
 
 def test_individual_check_invalid_credentials(session, auth):
     r = session.post('http://app/individual/checks', json={
@@ -120,12 +87,7 @@ def test_individual_check_invalid_credentials(session, auth):
     assert r.headers['content-type'] == 'application/json'
 
     res = r.json()
-    #TODO: Implement
-    # assert res['errors'] == [{
-    #     'type': 'INVALID_CREDENTIALS',
-    #     'message': 'Username or password is invalid.',
-    # }]
     assert res['errors'] == [{
-        'type': 'INVALID_CHECK_INPUT',
-        'message': 'Not implemented!',
+        'type': 'INVALID_CREDENTIALS',
+        'message': 'Username or password is invalid.',
     }]

@@ -2,9 +2,12 @@
   "check_type": "COMPANY_PEPS_AND_SANCTIONS_SCREEN",
   "check_template": {
     "type": "ONE_TIME_POLLING",
-    "initial_interval": 120,
-    "polling_interval": 30,
-    "max_polls": 10
+    "polling_strategy": {
+      "type": "UNIFORM",
+      "initial_interval": 120,
+      "polling_interval": 30,
+      "max_polls": 10
+    }
   },
   "pricing": {
     "supports_reselling": true,

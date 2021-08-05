@@ -3,5 +3,6 @@
   "warnings": [],
   "errors": [],
   "check_output": {
+    "entity_type": "INDIVIDUAL"
   }
 }
