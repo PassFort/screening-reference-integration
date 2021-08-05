@@ -1,6 +1,8 @@
 import json
 import os
 import re
+from random import randrange
+from uuid import UUID
 
 from dataclasses import dataclass
 from typing import Optional, List, Tuple
@@ -43,17 +45,35 @@ def get_config():
 @auth.login_required
 @validate_models
 def start_check(req: StartCheckRequest) -> StartCheckResponse:
-    return StartCheckResponse.error([Error({
-        'type': ErrorType.INVALID_CHECK_INPUT,
-        'message': 'Not implemented!',
-    })])
+    return StartCheckResponse({
+        'provider_id': PROVIDER_ID,
+        'reference': "12345",
+        'custom_data': {
+            'counter': randrange(6)
+        },
+        "provider_data": "Demo result. Did not make request to provider."
+    })
 
 
-@blueprint.route('/checks/<uuid:check_id>/poll', methods=['POST'])
+@blueprint.route('/checks/<uuid:_check_id>/poll', methods=['POST'])
 @auth.login_required
 @validate_models
-def poll_check_result(req: PollCheckRequest) -> PollCheckResponse:
-   return PollCheckResponse.error([Error({
-        'type': ErrorType.INVALID_CHECK_INPUT,
-        'message': 'Not implemented!',
-    })])
+def poll_check_result(req: PollCheckRequest, _check_id: UUID) -> PollCheckResponse:
+    remaining_polls = req.custom_data["counter"]
+
+    if remaining_polls == 0:
+        return PollCheckResponse({
+            "provider_id": PROVIDER_ID,
+            "reference": req.reference,
+            "check_output": {
+                "entity_type": EntityType.COMPANY,
+            },
+            "provider_data": "Demo result. Did not make request to provider.",
+        })
+
+    return PollCheckResponse({
+        "provider_id": PROVIDER_ID,
+        "reference": req.reference,
+        "custom_data": {"counter": remaining_polls - 1 },
+        "provider_data": "Demo result. Did not make request to provider.",
+    })

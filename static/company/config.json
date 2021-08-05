@@ -1,5 +1,5 @@
 {
-  "check_type": "COMPANY_PEPS_AND_SANCTIONS_SCREENING",
+  "check_type": "COMPANY_PEPS_AND_SANCTIONS_SCREEN",
   "check_template": {
     "type": "ONE_TIME_POLLING",
     "initial_interval": 120,

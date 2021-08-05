@@ -124,6 +124,10 @@ class EntityType(StringType, metaclass=EnumMeta):
     INDIVIDUAL = 'INDIVIDUAL'
 
 
+class EntityData(BaseModel):
+    entity_type = EntityType(required=True)
+
+
 class AddressType(StringType, metaclass=EnumMeta):
     STRUCTURED = 'STRUCTURED'
 
@@ -140,6 +144,8 @@ class ProviderCredentials(BaseModel):
 class Field(StringType):
     COUNTRY_OF_INCORPORATION = 'COUNTRY_OF_INCORPORATION'
 
+class Warning(BaseModel):
+    ...
 
 class Error(BaseModel):
     type = ErrorType(required=True)
@@ -179,11 +185,24 @@ class Charge(BaseModel):
     sku = StringType(default=None)
 
 
+class CustomData(BaseModel):
+    counter = IntType(required=True)
+
 class StartCheckRequest(BaseModel):
-    ...
+    id = UUIDType(required=True)
+    demo_result = StringType(default=None)
+    commercial_relationship = CommercialRelationshipType(required=True)
+    check_input = ModelType(EntityData, required=True)
+    provider_config = ModelType(ProviderConfig, required=True)
+    provider_credentials = ModelType(ProviderConfig, default=None)
 
 
 class StartCheckResponse(BaseModel):
+    provider_id = UUIDType(default=None)
+    reference = StringType(default=None)
+    custom_data = ModelType(CustomData, required=True)
+    provider_data = BaseType(default=None)
+    warnings = ListType(ModelType(Warning), required=True, default=list)
     errors = ListType(ModelType(Error), required=True, default=list)
 
     def error(errors):
@@ -193,13 +212,28 @@ class StartCheckResponse(BaseModel):
 
 
 class PollCheckRequest(BaseModel):
-    ...
+    id = UUIDType(required=True)
+    provider_id = UUIDType(required=True)
+    reference = StringType(required=True)
+    demo_result = StringType(default=None)
+    commercial_relationship = CommercialRelationshipType(required=True)
+    provider_config = ModelType(ProviderConfig, required=True)
+    provider_credentials = ModelType(ProviderConfig, default=None)
+    custom_data = ModelType(CustomData, required=True)
 
 
 class PollCheckResponse(BaseModel):
+    provider_id = UUIDType(default=None)
+    reference = StringType(default=None)
+    custom_data = ModelType(CustomData, required=True)
+    provider_data = BaseType(required=True)
+
+    check_output = ModelType(EntityData, default=None)
+
+    warnings = ListType(ModelType(Warning), required=True, default=list)
     errors = ListType(ModelType(Error), required=True, default=list)
 
     def error(errors):
-        return StartCheckResponse({
+        return PollCheckResponse({
             'errors': errors,    
         })
