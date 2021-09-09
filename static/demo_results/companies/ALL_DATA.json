@@ -1,8 +1,141 @@
 {
-  "provider_data": "Demo result. Did not make request to provider.",
-  "warnings": [],
-  "errors": [],
-  "check_output": {
-    "entity_type": "COMPANY"
-  }
+    "provider_data": "Demo result. Did not make request to provider.",
+    "warnings": [],
+    "errors": [],
+    "check_output": {
+        "entity_type": "COMPANY",
+        "screening_hits": [
+            {
+                "provider": {
+                    "name": "Screening Reference Integration",
+                    "hit_id": "12345-01",
+                    "label": "screening-ref"
+                },
+                "data": {
+                    "name": "The Example Company",
+                    "aliases": [
+                        "The Example Co."
+                    ],
+                    "match_dates": [
+                        "2017-04-01",
+                        "1976"
+                    ],
+                    "match_dates_data": [
+                        {
+                            "type": "DOB",
+                            "date": "1976"
+                        },
+                        {
+                            "date": "2017-04-01"
+                        }
+                    ],
+                    "match_countries": [
+                        "GBR"
+                    ],
+                    "match_countries_data": [
+                        {
+                            "type": "REGISTRATION",
+                            "country_code": "GBR"
+                        }
+                    ],
+                    "pep": {
+                        "tier": 1,
+                        "roles": [
+                            {
+                                "name": "Head of state",
+                                "tier": 1,
+                                "tenure": {
+                                    "tenure_type": "CURRENT"
+                                }
+                            },
+                            {
+                                "name": "Ambassador",
+                                "tier": 2,
+                                "tenure": {
+                                    "tenure_type": "FORMER"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "flags": [
+                    {
+                        "type": "PEP",
+                        "label": "Political"
+                   }
+                ],
+                "status": "UNRESOLVED"
+            },
+            {
+                "provider": {
+                    "name": "Screening Reference Integration",
+                    "hit_id": "12345-02",
+                    "label": "screening-ref"
+                },
+                "data": {
+                    "name": "Example",
+                    "aliases": [
+                        "Example Ltd",
+                        "Example Limited"
+                    ],
+                    "media": [
+                        {
+                            "date": "2019-08-29",
+                            "snippet": "https://www.theguardian.com/politics/2016/jun/24/david-cameron-resigns-after-uk-votes-to-leave-european-union",
+                            "title": "David Cameron resigns after UK votes to leave European union"
+                        }
+                    ],
+                    "sanctions": [
+                        {
+                            "type": "Watch List / Sanction",
+                            "name": "On List [US Treasury Dept. OFAC Consolidated Non-SDN Sanctions List]",
+                            "list": {
+                                "name": "US Treasury Dept. OFAC Consolidated Non-SDN Sanctions List"
+                            },
+                            "time_periods": [
+                                {
+                                    "tenure_type": "CURRENT",
+                                    "from_date": "2016-07-22"
+                                }
+                            ],
+                            "is_current": true,
+                            "is_past": false
+                        }
+                    ]
+                },
+                "flags": [
+                    {
+                        "type": "SANCTION",
+                        "label": "sanctioned"
+                    },
+                    {
+                        "type": "ADVERSE_MEDIA",
+                        "label": "media"
+                    }
+                ],
+                "status": "UNRESOLVED"
+            },
+            {
+                "provider": {
+                    "name": "Screening Reference Integration",
+                    "hit_id": "12345-03",
+                    "label": "screening-ref"
+                },
+                "data": {
+                    "name": "Example",
+                    "aliases": [
+                        "Example Ltd",
+                        "Example Limited"
+                    ]
+                },
+                "flags": [
+                    {
+                        "type": "REFER",
+                        "provider_type": "special interest"
+                    }
+                ],
+                "status": "UNRESOLVED"
+            }
+        ]
+    }
 }

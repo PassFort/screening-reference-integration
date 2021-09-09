@@ -1,0 +1,35 @@
+{
+    "provider_data": "Demo result. Did not make request to provider.",
+    "warnings": [],
+    "errors": [],
+    "check_output": {
+        "entity_type": "COMPANY",
+        "screening_hits": [
+            {
+                "provider": {
+                    "name": "Screening Reference Integration",
+                    "hit_id": "12345",
+                    "label": "screening-ref"
+                },
+                "data": {
+                    "name": "The Example Company",
+                    "sanctions": [
+                            {
+                                "name": "On List [UK HM Treasury Financial Sanctions Target List]",
+                                "type": "Watch List / Sanction",
+                                "list": {
+                                    "name": "UK HM Treasury Financial Sanctions Target List"
+                                }
+                            }
+                        ]
+                },
+                "status": "UNRESOLVED",
+                "flags": [
+                    {
+                        "type": "SANCTION"
+                    }
+                ]
+            }
+        ]
+    }
+}

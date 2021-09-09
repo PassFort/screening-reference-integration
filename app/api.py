@@ -2,6 +2,7 @@ import inspect
 from functools import wraps
 from typing import Iterable, TypeVar, Optional, Type, List
 
+from flask import abort, request, Response, jsonify
 from schematics import Model
 from schematics.common import NOT_NONE
 from schematics.types import (
@@ -10,11 +11,12 @@ from schematics.types import (
 )
 from schematics.exceptions import DataError
 from schematics.types.base import TypeMeta
-from flask import abort, request, Response, jsonify
+from schematics.types.serializable import serializable
 
 # Validation
 T = TypeVar('T')
 
+PROVIDER_NAME = "Screening reference integration"
 
 def _first(x: Iterable[T]) -> Optional[T]:
     return next(iter(x), None)
@@ -126,8 +128,193 @@ class EntityType(StringType, metaclass=EnumMeta):
     INDIVIDUAL = 'INDIVIDUAL'
 
 
+class HitStatus(StringType, metaclass=EnumMeta):
+    MATCH = 'MATCH'
+    MISMATCH = 'MISMATCH'
+    UNRESOLVED = 'UNRESOLVED'
+
+
+class FlagType(StringType, metaclass=EnumMeta):
+    PEP = 'PEP'
+    SANCTION = 'SANCTION'
+    ADVERSE_MEDIA = 'ADVERSE_MEDIA'
+    REFER = 'REFER'
+
+
+class CountryMatchType(StringType, metaclass=EnumMeta):
+    AFFILIATION = 'AFFILIATION'
+    CITIZENSHIP = 'CITIZENSHIP'
+    CURRENT_OWNERSHIP = 'CURRENT_OWNERSHIP'
+    OWNERSHIP = 'OWNERSHIP'
+    JURISDICTION = 'JURISDICTION'
+    REGISTRATION = 'REGISTRATION'
+    ALLEGATION = 'ALLEGATION'
+    RESIDENCE = 'RESIDENCE'
+    RISK = 'RISK'
+    FORMERLY_SANCTIONED = 'FORMERLY_SANCTIONED'
+    SANCTIONED = 'SANCTIONED'
+    NATIONALITY = 'NATIONALITY'
+
+
+class DateMatchType(StringType, metaclass=EnumMeta):
+    DOB = 'DOB'
+    DECEASED = 'DECEASED'
+    END_OF_PEP = 'END_OF_PEP'
+    END_OF_ASSOCIATION_TO_PEP = 'END_OF_ASSOCIATION_TO_PEP'
+
+
+class Flag(BaseModel):
+    type = FlagType(required=True)
+    label = StringType(default=None)
+
+
+class CountryMatch(BaseModel):
+    type = CountryMatchType(required=True)
+    country_code = StringType(min_length=3, max_length=3, required=True)
+    label = StringType()
+
+
+class DateMatch(BaseModel): 
+    type = DateMatchType(required=True)
+    date = DateType(required=True)
+    label = StringType()
+
+
+class TenureType(StringType, metaclass=EnumMeta):
+    CURRENT = 'CURRENT'
+    FORMER = 'FORMER'
+
+
+class Tenure(Model):
+    tenure_type = TenureType(required=True)
+
+    class Options:
+        export_level = NOT_NONE
+
+
+class CurrentTenure(Tenure):
+    start = DateType(default=None)
+
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get("tenure_type") == TenureType.CURRENT
+
+
+class FormerTenure(Tenure):
+    start = DateType(default=None)
+    end = DateType(default=None)
+
+    @classmethod
+    def _claim_polymorphic(cls, data):
+        return data.get("tenure_type") == TenureType.FORMER
+
+
+class PepRole(BaseModel):
+    name = StringType(required=True)
+    tier = IntType(default=None)
+    tenure = PolyModelType(Tenure)
+
+
+class PepData(BaseModel):
+    roles = ListType(ModelType(PepRole))
+    tier = IntType(default=None)
+
+
+class Media(BaseModel):
+    date = DateType(default=None)
+    snippet = StringType(default=None)
+    title = StringType(default=None)
+
+
+class SanctionsList(BaseModel):
+    name = StringType(required=True)
+
+
+class Sanction(BaseModel):
+    name = StringType(required=True)
+    type = StringType(default=None)
+
+    list = ModelType(SanctionsList, default=None)
+
+
+class HitAssociation(BaseModel):
+    label = StringType(required=True)
+
+
+class HitDetail(BaseModel):
+    title = StringType()
+    text = StringType()
+
+
+class HitSource(BaseModel):
+    name = StringType(required=True)
+    url = StringType()
+    description = StringType()
+
+
+class SanctionsList(BaseModel):
+    name = StringType()
+
+
+class SanctionData(BaseModel):
+    name = StringType(required=True)
+    type = StringType()
+    list = ModelType(SanctionsList)
+    issued_by = StringType()
+    time_periods = ListType(ModelType(Tenure))
+
+
+class MediaData(BaseModel):
+    url = StringType()
+    pdf_url = StringType()
+    title = StringType()
+    snippet  = StringType()
+    date = DateType()
+
+
+class HitData(BaseModel):
+    name = StringType(required=True)
+    aliases = ListType(StringType, default=list, required=True)
+    associates = ListType(ModelType("HitAssociate"))
+    brand_text = StringType()
+    confidence_score = FloatType()
+    countries = ListType(ModelType(CountryMatch), default=list, required=True)
+    dates = ListType(ModelType(DateMatch), default=list, required=True)
+    deceased = BooleanType()
+    details = ListType(ModelType(HitDetail))
+    gender = StringType()
+    sources = ListType(ModelType(HitSource))
+    pep = ModelType(PepData)
+    sanctions = ListType(ModelType(SanctionData))
+    media = ListType(ModelType(MediaData))
+
+
+class HitAssociate(BaseModel):
+    association = ModelType(HitAssociation, required=True)
+    data = ModelType(HitData, default=dict, required=True)
+    flags = ListType(ModelType(Flag), default=list, required=True)
+
+
+class HitProvider(BaseModel):
+    hit_id = StringType(required=True)
+    label = StringType(required=True)
+
+    @serializable
+    def name(self):
+        return PROVIDER_NAME
+
+
+class ScreeningHit(BaseModel):
+    provider = ModelType(HitProvider, required=True)
+    status = HitStatus(required=True)
+    flags = ListType(ModelType(Flag), default=list, required=True)
+    data = ModelType(HitData, default=dict, required=True)
+
+
 class EntityData(BaseModel):
     entity_type = EntityType(required=True)
+    
+    screening_hits = ListType(ModelType(ScreeningHit))
 
 
 class AddressType(StringType, metaclass=EnumMeta):

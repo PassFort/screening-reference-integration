@@ -1,6 +1,10 @@
 import json
+from json.decoder import JSONDecodeError
+import logging
 import os
 import re
+
+from schematics.exceptions import DataError
 
 from app.api import (
     Charge,
@@ -19,12 +23,17 @@ def _sanitize_filename(value: str, program=re.compile('^[a-z0-9A-Z_]+$')):
 
 
 def _get_file_content(model, filename):
+    filepath = os.path.join(os.path.dirname(__file__), filename)
     try:
         # Load file relative to current script
         with open(os.path.join(os.path.dirname(__file__), filename), 'r') as file:
             demo_response = model().import_data(json.load(file), apply_defaults=True)
     except FileNotFoundError:
+        logging.error(f"No file found: '{filepath}'")
         return None
+    except (JSONDecodeError, DataError) as e:
+        logging.error(f"error reading '{filepath}': {e}")
+        raise
 
     return demo_response
 

@@ -1,0 +1,79 @@
+{
+   "provider_data": "Demo result. Did not make request to provider.",
+    "warnings": [],
+    "errors": [],
+    "check_output": {
+        "entity_type": "INDIVIDUAL",
+        "screening_hits": [
+            {
+                "provider": {
+                    "hit_id": "12345-A",
+                    "name": "Screening Reference Integration",
+                    "label": "screening-ref"
+                },
+                "data": {
+                    "name": "John Smith"
+                },
+                "status": "UNRESOLVED",
+                "flags": [
+                    {
+                        "type": "REFER"
+                    }
+                ]
+            },
+            {
+                "provider": {
+                    "hit_id": "12345-B",
+                    "name": "Screening Reference Integration",
+                    "label": "screening-ref"
+                },
+                "data": {
+                    "name": "John Andrew Smith"
+                },
+                "status": "UNRESOLVED",
+                "flags": [
+                    {
+                        "type": "PEP",
+                        "data": {
+                            "roles": []
+                        }
+                    }
+                ]
+            },
+            {
+                "provider": {
+                    "hit_id": "12345-C",
+                    "name": "Screening Reference Integration",
+                    "label": "screening-ref"
+                },
+                "data": {
+                    "name": "John Smyth"
+                },
+                "status": "UNRESOLVED",
+                "flags": [
+                    {
+                        "type": "SANCTION",
+                        "data": []
+                    }
+                ]
+            },
+            {
+                "provider": {
+                    "hit_id": "12345-D",
+                    "name": "Screening Reference Integration",
+                    "label": "screening-ref"
+                },
+                "data": {
+                    "name": "Jason Smith"
+                },
+                "status": "UNRESOLVED",
+                "flags": [
+                    {
+                        "type": "ADVERSE_MEDIA",
+                        "data": []
+                    }
+                ]
+            }
+        ]
+    }
+}

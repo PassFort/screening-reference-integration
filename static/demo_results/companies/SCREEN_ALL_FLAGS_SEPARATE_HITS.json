@@ -1,0 +1,75 @@
+{
+   "provider_data": "Demo result. Did not make request to provider.",
+    "warnings": [],
+    "errors": [],
+    "check_output": {
+        "entity_type": "COMPANY",
+        "screening_hits": [
+            {
+                "provider": {
+                    "name": "Screening Reference Integration",
+                    "hit_id": "12345-A",
+                    "label": "screening-ref"
+                },
+                "data": {
+                    "name": "The Example Company"
+                },
+                "status": "UNRESOLVED",
+                "flags": [
+                    {
+                        "type": "REFER"
+                    }
+                ]
+            },
+            {
+                "provider": {
+                    "name": "Screening Reference Integration",
+                    "hit_id": "12345-B",
+                    "label": "screening-ref"
+                },
+                "provider_name": "Screening Reference Integration",
+                "data": {
+                    "name": "The Example Co."
+                },
+                "status": "UNRESOLVED",
+                "flags": [
+                    {
+                        "type": "PEP"
+                    }
+                ]
+            },
+            {
+                "provider": {
+                    "name": "Screening Reference Integration",
+                    "hit_id": "12345-C",
+                    "label": "screening-ref"
+                },
+                "data": {
+                    "name": "Example Company"
+                },
+                "status": "UNRESOLVED",
+                "flags": [
+                    {
+                        "type": "SANCTION"
+                    }
+                ]
+            },
+            {
+                "provider": {
+                    "name": "Screening Reference Integration",
+                    "hit_id": "12345-D",
+                    "label": "screening-ref"
+                },
+                "data": {
+                    "name": "Examples Ltd."
+                },
+                "status": "UNRESOLVED",
+                "flags": [
+                    {
+                        "type": "ADVERSE_MEDIA"
+                    }
+                ]
+            }
+        ]
+    }
+}

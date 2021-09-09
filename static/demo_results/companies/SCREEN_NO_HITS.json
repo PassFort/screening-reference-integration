@@ -1,0 +1,9 @@
+{
+   "provider_data": "Demo result. Did not make request to provider.",
+    "warnings": [],
+    "errors": [],
+    "check_output": {
+        "entity_type": "COMPANY",
+        "screening_hits": []
+    }
+}
