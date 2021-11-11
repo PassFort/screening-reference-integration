@@ -12,21 +12,21 @@
                     "label": "screening-ref"
                 },
                 "data": {
-                    "name": "John Smith"
+                    "name": "John Smith",
+                    "pep": {
+                        "roles": [
+                            {
+                                "name": "Member of Parliament",
+                                "tier": 1
+                            }
+                        ],
+                        "tier": 1
+                    }
                 },
                 "status": "UNRESOLVED",
                 "flags": [
                     {
-                        "type": "PEP",
-                        "data": {
-                            "roles": [
-                                {
-                                    "name": "Member of Parliament",
-                                    "tier": 1
-                                }
-                            ],
-                            "tier": 1
-                        }
+                        "type": "PEP"
                     }
                 ]
             }
