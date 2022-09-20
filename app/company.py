@@ -76,4 +76,5 @@ def poll_check_result(req: PollCheckRequest, _check_id: UUID) -> PollCheckRespon
         "reference": req.reference,
         "custom_data": {"counter": remaining_polls - 1 },
         "provider_data": "Demo result. Did not make request to provider.",
+        "pending": True,
     })

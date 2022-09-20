@@ -423,6 +423,8 @@ class PollCheckResponse(BaseModel):
     warnings = ListType(ModelType(Warning), required=True, default=list)
     errors = ListType(ModelType(Error), required=True, default=list)
 
+    pending = BooleanType(default=False)
+
     def error(errors):
         return PollCheckResponse({
             'errors': errors,    
